@@ -110,6 +110,12 @@ Werkzeug
 wordcloud
 wrapt
 wheel
+tensorflow
+numpy
+pandas
+plotly
+seaborn
+opencv-python-headless
 
 
 
