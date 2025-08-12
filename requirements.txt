@@ -94,7 +94,6 @@ tenacity
 tensorflow
 tensorboard
 tensorboard-data-server
-tensorflow-io-gcs-filesystem
 termcolor
 textblob
 threadpoolctl
@@ -111,6 +110,7 @@ Werkzeug
 wordcloud
 wrapt
 wheel
+
 
 
 
