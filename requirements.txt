@@ -54,7 +54,6 @@ narwhals
 nest-asyncio
 networkx
 nltk
-opencv-python
 opt_einsum
 optree
 orjson
@@ -116,6 +115,7 @@ pandas
 plotly
 seaborn
 opencv-python-headless
+
 
 
 
