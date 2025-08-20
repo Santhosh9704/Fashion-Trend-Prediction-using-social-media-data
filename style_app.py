@@ -93,21 +93,36 @@ with tabs[0]:
 # -------------------- STYLE PREDICTION --------------------
 with tabs[1]:
     st.subheader("📤 Upload an Image to Predict Style")
-    uploaded_file = st.file_uploader("Choose a fashion image...", type=["jpg", "jpeg", "png"])
+    uploaded_file = st.file_uploader("Choose a fashion image...", type=["jpg", "jpeg", "png", "webp"])
+
     if uploaded_file:
+        # Read and decode image
         file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-        img = cv2.imdecode(file_bytes, 1)
-        img_resized = cv2.resize(img, (224, 224)) / 255.0
+        img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+
+        # Convert BGR -> RGB for display
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+        # Preprocess
+        img_resized = cv2.resize(img_rgb, (224, 224)) / 255.0
         img_input = np.expand_dims(img_resized, axis=0)
 
+        # Prediction
         prediction = model.predict(img_input)
         predicted_class = class_names[np.argmax(prediction)]
         confidence = float(np.max(prediction))
 
-        st.image(img, caption="📸 Uploaded Image", width=400)
-        st.success(f"🧠 Predicted Style: **{predicted_class.upper()}**")
-        st.progress(confidence)
-        st.caption(f"🔍 Confidence: {confidence:.2%}")
+        # Display uploaded image
+        st.image(img_rgb, caption="📸 Uploaded Image", width=400)
+
+        # Confidence threshold
+        threshold = 0.7  # adjust based on validation
+        if confidence < threshold:
+            st.error("⚠️ This doesn’t seem like a fashion clothing image. Please upload a valid clothing photo.")
+        else:
+            st.success(f"🧠 Predicted Style: **{predicted_class.upper()}**")
+            st.progress(int(confidence * 100))
+            st.caption(f"🔍 Confidence: {confidence:.2%}")
 
 # -------------------- SOCIAL SENTIMENT --------------------
 with tabs[2]:
